@@ -32,11 +32,10 @@ func (p *Pickr) Do(seed int64, args ...string) error {
 		return p.doToss(p.randSource)
 
 	case EventRoll:
-		var n string
-		if len(args) == 0 {
-			n = "6"
+		var n = "6"
+		if len(args) > 0 {
+			n = args[0]
 		}
-		n = args[0]
 		return p.doRoll(p.randSource, n)
 
 	case EventChoose:
