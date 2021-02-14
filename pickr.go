@@ -17,6 +17,7 @@ type Pickr struct {
 	RandSource *rand.Rand
 }
 
+// Do performs the event specified in the pickr struct
 func (p *Pickr) Do(seed int64, args ...string) error {
 	if p.Event == "" {
 		panic("no event specified, there is nothing to do")

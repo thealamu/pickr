@@ -30,8 +30,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	now := time.Now().UnixNano()
-	p.Do(now, os.Args[2:]...)
+	seed := time.Now().UnixNano()
+	p.Do(seed, os.Args[2:]...)
 }
 
 func printUsage() {
