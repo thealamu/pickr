@@ -16,29 +16,22 @@ func main() {
 	}
 
 	p := &pickr.Pickr{Out: os.Stdout}
-	now := time.Now().UnixNano()
 
 	switch os.Args[1] {
 	case "toss":
 		p.Event = pickr.EventToss
-		fmt.Println("Tossing a coin")
-		p.Do(now, os.Args[2:]...)
-
 	case "roll":
 		p.Event = pickr.EventRoll
-		fmt.Println("Rolling a die")
-		p.Do(now, os.Args[2:]...)
-
 	case "choose":
 		p.Event = pickr.EventChoose
-		fmt.Println("Choosing from list")
-		p.Do(now, os.Args[2:]...)
-
 	default:
 		fmt.Println("invalid event")
 		printUsage()
 		os.Exit(1)
 	}
+
+	now := time.Now().UnixNano()
+	p.Do(now, os.Args[2:]...)
 }
 
 func printUsage() {
