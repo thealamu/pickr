@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"math/rand"
+	"strconv"
 )
 
 type Event string
@@ -28,7 +29,7 @@ func (p *Pickr) Do(seed int64, args ...string) error {
 
 	switch p.event {
 	case EventToss:
-		return p.doToss(&r)
+		return p.doToss(p.randSource)
 
 	case EventRoll:
 		var n string
@@ -36,26 +37,34 @@ func (p *Pickr) Do(seed int64, args ...string) error {
 			n = "6"
 		}
 		n = args[0]
-		return p.doRoll(n)
+		return p.doRoll(p.randSource, n)
 
 	case EventChoose:
-		return p.doChoose(args...)
+		return p.doChoose(p.randSource, args...)
 
 	default:
 		return fmt.Errorf("unknown event '%s'", p.event)
 	}
 }
 
-func (p *Pickr) doToss() error {
+func (p *Pickr) doToss(r *rand.Rand) error {
 	v, err := toss(r)
 	fmt.Fprintln(p.out, v)
 	return err
 }
 
-func (p *Pickr) doRoll() {
-
+func (p *Pickr) doRoll(r *rand.Rand, n string) error {
+	nAsInt, err := strconv.Atoi(n)
+	if err != nil {
+		return err
+	}
+	v, err := roll(r, nAsInt)
+	fmt.Fprintln(p.out, v)
+	return err
 }
 
-func (p *Pickr) doChoose() {
-
+func (p *Pickr) doChoose(r *rand.Rand, args ...string) error {
+	v, err := choose(r, args...)
+	fmt.Fprintln(p.out, v)
+	return err
 }
