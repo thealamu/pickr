@@ -12,43 +12,43 @@ import (
 type Event string
 
 type Pickr struct {
-	out        io.Writer
-	event      Event
-	randSource *rand.Rand
+	Out        io.Writer
+	Event      Event
+	RandSource *rand.Rand
 }
 
 func (p *Pickr) Do(seed int64, args ...string) error {
-	if p.event == "" {
+	if p.Event == "" {
 		panic("no event specified, there is nothing to do")
 	}
 
-	if p.randSource == nil {
-		p.randSource = rand.New(rand.NewSource(0))
+	if p.RandSource == nil {
+		p.RandSource = rand.New(rand.NewSource(0))
 	}
-	p.randSource.Seed(seed)
+	p.RandSource.Seed(seed)
 
-	switch p.event {
+	switch p.Event {
 	case EventToss:
-		return p.doToss(p.randSource)
+		return p.doToss(p.RandSource)
 
 	case EventRoll:
 		var n = "6"
 		if len(args) > 0 {
 			n = args[0]
 		}
-		return p.doRoll(p.randSource, n)
+		return p.doRoll(p.RandSource, n)
 
 	case EventChoose:
-		return p.doChoose(p.randSource, args...)
+		return p.doChoose(p.RandSource, args...)
 
 	default:
-		return fmt.Errorf("unknown event '%s'", p.event)
+		return fmt.Errorf("unknown event '%s'", p.Event)
 	}
 }
 
 func (p *Pickr) doToss(r *rand.Rand) error {
 	v, err := toss(r)
-	fmt.Fprintln(p.out, v)
+	fmt.Fprintln(p.Out, v)
 	return err
 }
 
@@ -58,12 +58,12 @@ func (p *Pickr) doRoll(r *rand.Rand, n string) error {
 		return err
 	}
 	v, err := roll(r, nAsInt)
-	fmt.Fprintln(p.out, v)
+	fmt.Fprintln(p.Out, v)
 	return err
 }
 
 func (p *Pickr) doChoose(r *rand.Rand, args ...string) error {
 	v, err := choose(r, args...)
-	fmt.Fprintln(p.out, v)
+	fmt.Fprintln(p.Out, v)
 	return err
 }
