@@ -5,7 +5,7 @@ import (
 	"math/rand"
 )
 
-const RollEvent Event = "rollEvent"
+const EventRoll Event = "rollEvent"
 
 // roll implements a single n-sided die roll
 func roll(r rand.Rand, n int) (string, error) {

@@ -2,7 +2,7 @@ package pickr
 
 import "math/rand"
 
-const TossEvent Event = "tossEvent"
+const EventToss Event = "tossEvent"
 
 // toss implements a single coin toss
 func toss(r rand.Rand) (string, error) {
