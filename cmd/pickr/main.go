@@ -19,6 +19,10 @@ func main() {
 		fmt.Println("Rolling a die")
 	case "choose":
 		fmt.Println("Choosing from list")
+	default:
+		fmt.Println("invalid event")
+		printUsage()
+		os.Exit(1)
 	}
 }
 
